@@ -13,8 +13,7 @@ namespace WFAppK_srednih
     {
         int Npoint;
         int Nclass;
-        int WIDTH;
-        int HEIGHT;
+        System.Windows.Forms.Panel panelHolst;
 
         public struct PointInfo
         {
@@ -22,30 +21,74 @@ namespace WFAppK_srednih
             public int father;
         }
 
-        public ClassKmeans(int npoint, int nclass, int width, int height)
+        public ClassKmeans(int npoint, int nclass, System.Windows.Forms.Panel panel)
         {
             Npoint = npoint;
             Nclass = nclass;
-            WIDTH = width;
-            HEIGHT = height;
+            panelHolst = panel;
+            RandomPoint();
         }
 
         private void RandomPoint()
         {
             Random RandomNumber = new Random();
             PointInfo[] vectorPoint = new PointInfo[Npoint];
+            int[] vectorKernel = new int[Nclass];
+            int j;
+            int i;
+            int WIDTH = panelHolst.Width;
+            int HEIGHT = panelHolst.Height;
 
-            for (int i = 0; i < Npoint; i++)
+            i = 0;
+            while (i < Nclass)
             {
-                vectorPoint[i].coord = new Point(RandomNumber.Next(1, WIDTH), RandomNumber.Next(1, HEIGHT));
-                vectorPoint[i].father = RandomNumber.Next(0, Npoint-1);
+                vectorKernel[i] = RandomNumber.Next(0, Npoint - 1);
+                for (j = 0; j < i; j++)
+                {
+                    if (vectorKernel[i] == vectorKernel[j])
+                        i--;
+                }
+                i++;
             }
-            for (int i = 0; i < Npoint; i++)
+
+            for (i = 0; i < Npoint; i++)
             {
-                Pen pen = new Pen(Color.Black);
-                Graphics GpanelHolst;
-                GpanelHolst = panelHolst.CreateGraphics();
-                
+                vectorPoint[i].coord = new Point(RandomNumber.Next(1, WIDTH),
+                                                 RandomNumber.Next(1, HEIGHT));
+                vectorPoint[i].father = RandomNumber.Next(0, Nclass - 1);
+                for (j = 0; j < Nclass; j++)
+                    if (i == vectorKernel[j]) 
+                        vectorPoint[i].father = -1; 
+            }
+
+            MessageBox.Show(vectorKernel[0].ToString() + " "+
+                            vectorKernel[1].ToString() + " " +
+                            vectorKernel[2].ToString() + " " +
+                            vectorKernel[3].ToString() + " " +
+                            vectorKernel[4].ToString() + " ");
+            MessageBox.Show(vectorPoint[0].father.ToString() + " " +
+                            vectorPoint[1].father.ToString() + " " +
+                            vectorPoint[2].father.ToString() + " " +
+                            vectorPoint[3].father.ToString() + " " +
+                            vectorPoint[4].father.ToString() + " " +
+                            vectorPoint[5].father.ToString() + " " +
+                            vectorPoint[6].father.ToString() + " " +
+                            vectorPoint[7].father.ToString() + " " +
+                            vectorPoint[8].father.ToString() + " " +
+                            vectorPoint[9].father.ToString() + " " +
+                            vectorPoint[10].father.ToString() + " " +
+                            vectorPoint[11].father.ToString() + " ");
+
+            Pen pen = new Pen(Color.Black);
+            SolidBrush brush = new SolidBrush(Color.Black);
+            Graphics GpanelHolst;
+            GpanelHolst = panelHolst.CreateGraphics();
+            for (i = 0; i < Npoint; i++)
+            {
+                GpanelHolst.DrawEllipse(pen, vectorPoint[i].coord.X, 
+                                             vectorPoint[i].coord.Y, 3, 3);
+                GpanelHolst.FillEllipse(brush, vectorPoint[i].coord.X,
+                                             vectorPoint[i].coord.Y, 3, 3);
             }
         }
     }

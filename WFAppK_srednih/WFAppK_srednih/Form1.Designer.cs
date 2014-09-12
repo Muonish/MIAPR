@@ -53,11 +53,13 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "20",
+            "50",
+            "100",
             "150",
             "1000",
+            "5000",
             "25000",
-            "155000",
-            "1101000"});
+            "50000"});
             this.comboBox1.Location = new System.Drawing.Point(45, 109);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(152, 28);
