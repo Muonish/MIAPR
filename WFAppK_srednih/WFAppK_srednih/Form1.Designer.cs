@@ -40,9 +40,9 @@
             // panelHolst
             // 
             this.panelHolst.BackColor = System.Drawing.SystemColors.Window;
-            this.panelHolst.Location = new System.Drawing.Point(244, 32);
+            this.panelHolst.Location = new System.Drawing.Point(259, 28);
             this.panelHolst.Name = "panelHolst";
-            this.panelHolst.Size = new System.Drawing.Size(509, 411);
+            this.panelHolst.Size = new System.Drawing.Size(500, 500);
             this.panelHolst.TabIndex = 0;
             // 
             // comboBox1
@@ -85,7 +85,7 @@
             // buttonStart
             // 
             this.buttonStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonStart.Location = new System.Drawing.Point(45, 367);
+            this.buttonStart.Location = new System.Drawing.Point(45, 371);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(152, 76);
             this.buttonStart.TabIndex = 3;
@@ -118,11 +118,10 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label3.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.label3.Location = new System.Drawing.Point(130, 491);
+            this.label3.Location = new System.Drawing.Point(130, 489);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 20);
+            this.label3.Size = new System.Drawing.Size(0, 20);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Legend:";
             // 
             // FormMain
             // 

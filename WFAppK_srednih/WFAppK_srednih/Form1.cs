@@ -45,7 +45,7 @@ namespace WFAppK_srednih
                 {
                     MessageBox.Show("Error! Out of int32!");
                 }
-                ClassKmeans Kmeans = new ClassKmeans(Npoint, Nclass, panelHolst);
+                ClassKmeans Kmeans = new ClassKmeans(Npoint, Nclass, panelHolst, label3);
             }
         }
     }
