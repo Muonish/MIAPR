@@ -82,6 +82,7 @@ namespace WFAppK_srednih
         private void Paint()
         {
             label3.Text = "Painting...";
+            label3.Refresh();
             Pen pen = new Pen(Color.Black);
             SolidBrush brush = new SolidBrush(Color.Black);
             Graphics GpanelHolst;
@@ -115,7 +116,8 @@ namespace WFAppK_srednih
             double way = 0;
             int nearestKernel = 0;
 
-            label3.Text = "Calculation...";
+            label3.Text = "Classify...";
+            label3.Refresh();
             for (int i = 0; i < Npoint; i++)
             {
                 minway = double.MaxValue;
@@ -149,6 +151,7 @@ namespace WFAppK_srednih
             bool flag = false;
 
             label3.Text = "Recalculation...";
+            label3.Refresh();
             for (int i = 0; i < Nclass; i++)
             {
                 minAverageDistance = double.MaxValue;
@@ -198,7 +201,8 @@ namespace WFAppK_srednih
                 Classify();
                 Paint();
             }
-            label3.Text = "Finish..."; 
+            label3.Text = "Finish...";
+            label3.Refresh();
         }
     }
 }
