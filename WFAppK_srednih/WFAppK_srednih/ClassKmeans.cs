@@ -87,7 +87,7 @@ namespace WFAppK_srednih
             SolidBrush brush = new SolidBrush(Color.Black);
             Graphics GpanelHolst;
             GpanelHolst = panelHolst.CreateGraphics();
-            panelHolst.Refresh();
+            //panelHolst.Refresh();
             for (int i = 0; i < Npoint; i++)
             {
                 if (vectorPoint[i].father == -1)
@@ -95,9 +95,9 @@ namespace WFAppK_srednih
                     pen.Color = Color.Red;
                     brush.Color = Color.Red;
                     GpanelHolst.DrawEllipse(pen, vectorPoint[i].coord.X,
-                                             vectorPoint[i].coord.Y, 10, 10);
+                                             vectorPoint[i].coord.Y, 3, 3);
                     GpanelHolst.FillEllipse(brush, vectorPoint[i].coord.X,
-                                                 vectorPoint[i].coord.Y, 10, 10);
+                                                 vectorPoint[i].coord.Y, 3, 3);
                 }
                 else
                 {
