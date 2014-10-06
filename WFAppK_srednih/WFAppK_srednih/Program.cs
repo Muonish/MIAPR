@@ -11,7 +11,8 @@ namespace WFAppK_srednih
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
-        [STAThread]
+        ///[STAThread]
+        [MTAThread]
         static void Main()
         {
             Application.EnableVisualStyles();

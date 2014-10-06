@@ -37,15 +37,12 @@ namespace WFAppK_srednih
                 {
                     MessageBox.Show("Error! Out of int32!");
                 }
-                try
+                if ((Nclass = Convert.ToInt32(comboBox2.Text)) > 64)
+                    MessageBox.Show("Error! The number of classes can't be more than 64!");
+                else
                 {
-                    Nclass = Convert.ToInt32(comboBox2.Text);
+                    ClassKmeans Kmeans = new ClassKmeans(Npoint, Nclass, panelHolst, labelStatus);
                 }
-                catch
-                {
-                    MessageBox.Show("Error! Out of int32!");
-                }
-                ClassKmeans Kmeans = new ClassKmeans(Npoint, Nclass, panelHolst, labelStatus);
             }
         }
     }

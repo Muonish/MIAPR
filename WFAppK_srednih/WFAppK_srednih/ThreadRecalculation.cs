@@ -2,15 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace WFAppK_srednih
 {
     public class ThreadRecalculation
     {
-        public bool сentersIsChanged;
+        private ClassKmeans.PointInfo[] vectorPoint;
+        private int[] vectorKernel;
+        private int i;
+        private ManualResetEvent doneEvent;
 
-        public void Recalculation(ClassKmeans.PointInfo[] vectorPoint, int[] vectorKernel, int i)
+        public ThreadRecalculation(ClassKmeans.PointInfo[] vectorPoint, int[] vectorKernel, int i, ManualResetEvent doneEvent)
+        {
+            this.vectorPoint = vectorPoint;
+            this.vectorKernel = vectorKernel;
+            this.i = i;
+            this.doneEvent = doneEvent;
+        }
+
+
+        public void Recalculation(Object threadContext)
         {
             double averageDistance = 0;
             double minAverageDistance = double.MaxValue;
@@ -40,15 +52,16 @@ namespace WFAppK_srednih
             }
             if (vectorKernel[i] == possibleKernel)
             {
-                сentersIsChanged = false;
             }
             else
             {
                 vectorPoint[vectorKernel[i]].father = 0;
                 vectorKernel[i] = possibleKernel;
                 vectorPoint[possibleKernel].father = -1;
-                сentersIsChanged = true;
+                ClassKmeans.сentersIsChanged = true;
             }
+
+            doneEvent.Set();
         }
     }
 }

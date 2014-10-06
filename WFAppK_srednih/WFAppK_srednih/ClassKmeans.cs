@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Threading;
 
 namespace WFAppK_srednih
 {
@@ -24,7 +25,7 @@ namespace WFAppK_srednih
 
         public static int Npoint;
         public static int Nclass;
-        bool сentersIsChanged;
+        public static bool сentersIsChanged;
         System.Windows.Forms.Panel panelHolst;
         System.Windows.Forms.Label label3;
         int WIDTH;
@@ -95,10 +96,8 @@ namespace WFAppK_srednih
                 {
                     pen.Color = vectorPoint[i].color;
                     brush.Color = pen.Color;
-                    GpanelHolst.DrawRectangle(pen, vectorPoint[i].coord.X,
-                                                    vectorPoint[i].coord.Y, 3, 3);
                     GpanelHolst.FillRectangle(brush, vectorPoint[i].coord.X,
-                                                    vectorPoint[i].coord.Y, 3, 3);
+                                                     vectorPoint[i].coord.Y, 5, 5);
 
                     vectorPoint[i].isChanged = false;
                 }
@@ -145,16 +144,20 @@ namespace WFAppK_srednih
             
             сentersIsChanged = false;
 
+            ManualResetEvent[] doneEvents = new ManualResetEvent[Nclass];
+            //ThreadPool.SetMaxThreads(100,100);
+
             label3.Text = "Recalculation...";
             label3.Refresh();
             for (int i = 0; i < Nclass; i++)
             {
-                ThreadRecalculation threadRecalculation = new ThreadRecalculation();
-                threadRecalculation.сentersIsChanged = false;
-                threadRecalculation.Recalculation(vectorPoint, vectorKernel, i);
-                сentersIsChanged = threadRecalculation.сentersIsChanged;
+                doneEvents[i] = new ManualResetEvent(false);
+                ThreadRecalculation threadRecalculation = new ThreadRecalculation(vectorPoint, vectorKernel, i, doneEvents[i]);
+                ThreadPool.QueueUserWorkItem(threadRecalculation.Recalculation);
             }
-                return сentersIsChanged;
+
+            WaitHandle.WaitAll(doneEvents);
+            return сentersIsChanged;
         }
         
         private void Processing()
