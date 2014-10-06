@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 namespace WFAppK_srednih
 {
-    class ClassKmeans
+    public class ClassKmeans
     {
         const int DiapasonColorMax = 200;
         const int DiapasonColorMin = 20;
@@ -19,10 +19,12 @@ namespace WFAppK_srednih
             public Point coord;
             public int father;
             public Color color;
+            public bool isChanged;
         }
 
-        static int Npoint;
-        static int Nclass;
+        public static int Npoint;
+        public static int Nclass;
+        bool сentersIsChanged;
         System.Windows.Forms.Panel panelHolst;
         System.Windows.Forms.Label label3;
         int WIDTH;
@@ -75,9 +77,9 @@ namespace WFAppK_srednih
                                                               RandomNumber.Next(DiapasonColorMin, DiapasonColorMax),
                                                               RandomNumber.Next(DiapasonColorMin, DiapasonColorMax));
                     }
+                vectorPoint[i].isChanged = true;
             }
-            
-            Paint();
+           
         }
         private void Paint()
         {
@@ -87,26 +89,18 @@ namespace WFAppK_srednih
             SolidBrush brush = new SolidBrush(Color.Black);
             Graphics GpanelHolst;
             GpanelHolst = panelHolst.CreateGraphics();
-            //panelHolst.Refresh();
             for (int i = 0; i < Npoint; i++)
             {
-                if (vectorPoint[i].father == -1)
-                {
-                    pen.Color = Color.Red;
-                    brush.Color = Color.Red;
-                    GpanelHolst.DrawEllipse(pen, vectorPoint[i].coord.X,
-                                             vectorPoint[i].coord.Y, 3, 3);
-                    GpanelHolst.FillEllipse(brush, vectorPoint[i].coord.X,
-                                                 vectorPoint[i].coord.Y, 3, 3);
-                }
-                else
+                if (vectorPoint[i].isChanged)
                 {
                     pen.Color = vectorPoint[i].color;
                     brush.Color = pen.Color;
-                    GpanelHolst.DrawEllipse(pen, vectorPoint[i].coord.X,
-                                                 vectorPoint[i].coord.Y, 3, 3);
-                    GpanelHolst.FillEllipse(brush, vectorPoint[i].coord.X,
-                                                 vectorPoint[i].coord.Y, 3, 3);
+                    GpanelHolst.DrawRectangle(pen, vectorPoint[i].coord.X,
+                                                    vectorPoint[i].coord.Y, 3, 3);
+                    GpanelHolst.FillRectangle(brush, vectorPoint[i].coord.X,
+                                                    vectorPoint[i].coord.Y, 3, 3);
+
+                    vectorPoint[i].isChanged = false;
                 }
             }
         }
@@ -115,6 +109,7 @@ namespace WFAppK_srednih
             double minway = double.MaxValue;
             double way = 0;
             int nearestKernel = 0;
+            int oldKernel = 0;
 
             label3.Text = "Classify...";
             label3.Refresh();
@@ -126,6 +121,7 @@ namespace WFAppK_srednih
                 } 
                 else
                 {
+                    oldKernel = vectorPoint[i].father;
                     for (int j = 0; j < Nclass; j++)
                     {
                         way = Math.Sqrt(Math.Pow((vectorPoint[vectorKernel[j]].coord.X - vectorPoint[i].coord.X), 2) +
@@ -138,60 +134,29 @@ namespace WFAppK_srednih
                     }
                     vectorPoint[i].father = nearestKernel;
                     vectorPoint[i].color = vectorPoint[nearestKernel].color;
+                    if (oldKernel != nearestKernel) 
+                        vectorPoint[i].isChanged = true;
                 }
             }
         }
 
         private bool CentersIsChanged()
         {
-            double averageDistance = 0;
-            double minAverageDistance = double.MaxValue;
-            int NmemberClass = 0;
-            int possibleKernel;
-            bool flag = false;
+            
+            сentersIsChanged = false;
 
             label3.Text = "Recalculation...";
             label3.Refresh();
             for (int i = 0; i < Nclass; i++)
             {
-                minAverageDistance = double.MaxValue;
-                possibleKernel = vectorKernel[i];
-                for(int j = 0; j < Npoint; j++)
-                {
-                    if (vectorPoint[j].father == vectorKernel[i] || j == vectorKernel[i])
-                    {   NmemberClass = 0;
-                        averageDistance = 0;
-                        for (int k = 0; k < Npoint; k++)
-                        {
-                            if ((vectorPoint[k].father == vectorKernel[i] || k == vectorKernel[i]) && (k != j))
-                            {
-                                averageDistance += Math.Sqrt(Math.Pow((vectorPoint[k].coord.X - vectorPoint[j].coord.X), 2) +
-                                                             Math.Pow((vectorPoint[k].coord.Y - vectorPoint[j].coord.Y), 2));
-                                NmemberClass++;
-                            }
-                        }
-                        averageDistance /= NmemberClass;
-                        if (averageDistance < minAverageDistance)
-                        {
-                            minAverageDistance = averageDistance;
-                            possibleKernel = j;
-                        }
-                    }
-                }
-                if (vectorKernel[i] == possibleKernel)
-                {
-                    flag = false;
-                }
-                else
-                {
-                    vectorPoint[vectorKernel[i]].father = 0;
-                    vectorKernel[i] = possibleKernel;
-                    vectorPoint[possibleKernel].father = -1;
-                    flag = true;
-                }
+                ThreadRecalculation threadRecalculation = new ThreadRecalculation();
+                threadRecalculation.сentersIsChanged = false;
+                threadRecalculation.Recalculation(vectorPoint, vectorKernel, i);
+                сentersIsChanged = threadRecalculation.сentersIsChanged;
             }
-                return flag;
+                return сentersIsChanged;
         }
+        
         private void Processing()
         {
             Classify();
