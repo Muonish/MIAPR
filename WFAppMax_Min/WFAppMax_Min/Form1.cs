@@ -12,22 +12,8 @@ namespace WFAppMax_Min
 {
     public partial class FormMain : Form
     {
-        const int DiapasonColorMax = 200;
-        const int DiapasonColorMin = 20;
-
-        public struct PointInfo
-        {
-            public Point coord;
-            public int father;
-            public Color color;
-            public bool isChanged;
-        }
-
         public static int Npoint;
         public static int Nclass;
-        public static bool сentersIsChanged;
-        PointInfo[] vectorPoint;
-        int[] vectorKernel;
 
         public FormMain()
         {
@@ -37,7 +23,6 @@ namespace WFAppMax_Min
         private void buttonStart_Click(object sender, EventArgs e)
         {
             Npoint = 0;
-            Nclass = 0;
             panelHolst.Refresh();
 
             if (comboBoxPoints.Text == string.Empty)
@@ -55,7 +40,7 @@ namespace WFAppMax_Min
                     MessageBox.Show("Error! Out of int!");
                 }
                 
-                var kmeans = new ClassMaximin(Npoint, this);
+                var classification = new Classification(Npoint, this);
                
             }
         }

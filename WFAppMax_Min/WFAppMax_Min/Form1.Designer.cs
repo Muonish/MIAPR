@@ -81,12 +81,10 @@
             this.comboBoxPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxPoints.FormattingEnabled = true;
             this.comboBoxPoints.Items.AddRange(new object[] {
-            "20",
-            "50",
-            "100",
-            "150",
-            "1000",
             "5000",
+            "10000",
+            "15000",
+            "20000",
             "25000",
             "50000"});
             this.comboBoxPoints.Location = new System.Drawing.Point(51, 150);
@@ -107,7 +105,7 @@
             this.Controls.Add(this.panelHolst);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormMain";
-            this.Text = "Maximin";
+            this.Text = "Maximin + K-means";
             this.ResumeLayout(false);
             this.PerformLayout();
 

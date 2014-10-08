@@ -13,164 +13,89 @@ namespace WFAppMax_Min
 {
     class ClassMaximin
     {
-        const int DiapasonColorMax = 200;
-        const int DiapasonColorMin = 20;
-
         private FormMain parent;
 
-        public struct PointInfo
-        {
-            public Point coord;
-            public int father;
-            public Color color;
-            public bool isChanged;
-        }
-
-        public static int Npoint;
-        public static bool сentersIsChanged;
-        PointInfo[] vectorPoint;
+        Classification.PointInfo[] vectorPoint;
         List<int> vectorKernel;
 
-        public ClassMaximin(int npoint, FormMain p)
+        public ClassMaximin(FormMain p, Classification.PointInfo[] vp, List<int> vk)
         {
             parent = p;
-            Npoint = npoint;
-            vectorPoint = new PointInfo[Npoint];
-            RandomPoint();
-            Processing();
-        }
-        private void Processing()
-        {
-            Classify();
+            vectorPoint = vp;
+            vectorKernel = vk;
             Paint();
             CalculateNumberOfClasses();
-            Classify();
-            Paint();
-            //while (CentersIsChanged())
-            //{
-            //    Classify();
-            //    Paint();
-            //}
-            StatusMessage("Finish.");
-        }
-
-        private void RandomPoint()
-        {
-            var RandomNumber = new Random();
-
-            vectorKernel = new List<int>();
-            vectorKernel.Add(RandomNumber.Next(0, Npoint - 1));
-
-            for (int i = 0; i < Npoint; i++)
-            {
-                vectorPoint[i].coord = new Point(RandomNumber.Next(1, parent.panelHolst.Width),
-                                                 RandomNumber.Next(1, parent.panelHolst.Height));
-                vectorPoint[i].color = Color.FromArgb(200, 200, 200);
-                if (vectorKernel.Contains(i))
-                {
-                    vectorPoint[i].father = -1;
-                    vectorPoint[i].color = SetRandomColor();
-                    vectorPoint[i].isChanged = true;
-                }
-
-            }
         }
 
         private void Paint()
         {
-            StatusMessage("Painting...");
+            Classification.StatusMessage(parent, "Painting...");
             var pen = new Pen(Color.Black);
             var brush = new SolidBrush(Color.Black);
             Graphics GpanelHolst = parent.panelHolst.CreateGraphics();
-            for (int i = 0; i < Npoint; i++)
+            for (int i = 0; i < vectorPoint.Length; i++)
             {
-                //if (vectorPoint[i].isChanged)
-                //{
-                    pen.Color = vectorPoint[i].color;
-                    brush.Color = pen.Color;
-                    GpanelHolst.FillRectangle(brush, vectorPoint[i].coord.X,
-                                                     vectorPoint[i].coord.Y, 5, 5);
+                pen.Color = vectorPoint[i].color;
+                brush.Color = pen.Color;
+                GpanelHolst.FillRectangle(brush, vectorPoint[i].coord.X,
+                                                    vectorPoint[i].coord.Y, 7, 7);
 
-                    vectorPoint[i].isChanged = false;
-                //}
+                vectorPoint[i].isChanged = false;
             }
-        }
-        private void Classify()
-        {
-            double minway = double.MaxValue;
-            double way = 0;
-            int nearestKernel = 0;
-            int oldKernel = 0;
-
-            StatusMessage("Classify...");
-            for (int i = 0; i < Npoint; i++)
-            {
-                minway = double.MaxValue;
-                if (vectorPoint[i].father == -1)
-                {
-                }
-                else
-                {
-                    oldKernel = vectorPoint[i].father;
-                    for (int j = 0; j < vectorKernel.Count; j++)
-                    {
-                        way = Math.Sqrt(Math.Pow((vectorPoint[vectorKernel[j]].coord.X - vectorPoint[i].coord.X), 2) +
-                                        Math.Pow((vectorPoint[vectorKernel[j]].coord.Y - vectorPoint[i].coord.Y), 2));
-                        if (way < minway)
-                        {
-                            minway = way;
-                            nearestKernel = vectorKernel[j];
-                        }
-                    }
-                    vectorPoint[i].father = nearestKernel;
-                    vectorPoint[i].color = vectorPoint[nearestKernel].color;
-                    if (oldKernel != nearestKernel)
-                        vectorPoint[i].isChanged = true;
-                }
-            }
-        }
-        private void StatusMessage(String message)
-        {
-            parent.labelStatus.Text = message;
-            parent.labelStatus.Refresh();
-            
-        }
-        private Color SetRandomColor()
-        {
-            var RandomNumber = new Random();
-            return Color.FromArgb(RandomNumber.Next(DiapasonColorMin, DiapasonColorMax),
-                                  RandomNumber.Next(DiapasonColorMin, DiapasonColorMax),
-                                  RandomNumber.Next(DiapasonColorMin, DiapasonColorMax));
         }
 
         private void CalculateNumberOfClasses()
         {
-            double maxway = 0;
+            double maxway;
             double maxwayclass;
-            int possibleNewKernel = 0;
-            int ipoint = 0;
-            for (int i = 0; i < vectorKernel.Count; i++)
+            int possibleNewKernel;
+            int ipoint;
+            int numOfWays;
+            bool endOfCalculation = false;
+
+            Classification.StatusMessage(parent, "Calculate number of classes...");
+            while (!endOfCalculation)
             {
-                if ((maxwayclass = MaximumWayInClass(ref ipoint, i)) > maxway)
+                maxway = 0;
+                ipoint = 0;
+                possibleNewKernel = 0;
+                for (int i = 0; i < vectorKernel.Count; i++)
                 {
-                    possibleNewKernel = ipoint; 
-                    maxway = maxwayclass;
+                    if ((maxwayclass = MaximumWayInClass(ref ipoint, vectorKernel[i])) > maxway)
+                    {
+                        possibleNewKernel = ipoint;
+                        maxway = maxwayclass;
+                    }
+                }
+                numOfWays = 0;
+                if (maxway > (SumOfWaysBetweenClasses(ref numOfWays) / (2 * numOfWays)))
+                {
+                    vectorKernel.Add(possibleNewKernel);
+                    vectorPoint[possibleNewKernel].father = -1;
+                    vectorPoint[possibleNewKernel].color = Classification.SetRandomColor();
+                    Classification.Classify(parent, ref vectorPoint, ref vectorKernel);
+                    Paint();
+                }
+                else
+                {
+                    endOfCalculation = true;
                 }
             }
-            vectorKernel.Add(possibleNewKernel);
-            vectorPoint[possibleNewKernel].father = -1;
-            vectorPoint[possibleNewKernel].color = SetRandomColor();
         }
 
         private double MaximumWayInClass(ref int possibleNewKernel, int kernel)
         {
             double maxway = 0;
             double way;
-            for (int i = 0; i < Npoint; i++)
+            for (int i = 0; i < vectorPoint.Length; i++)
             {
-                if ((way = Way(kernel, i)) > maxway)
+                if (vectorPoint[i].father == kernel)
                 {
-                    maxway = way;
+                    if ((way = Way(kernel, i)) > maxway)
+                    {
+                        maxway = way;
+                        possibleNewKernel = i;
+                    }
                 }
             }
             return maxway;
@@ -180,6 +105,23 @@ namespace WFAppMax_Min
             return Math.Sqrt(Math.Pow((vectorPoint[b].coord.X - vectorPoint[a].coord.X), 2) +
                              Math.Pow((vectorPoint[b].coord.Y - vectorPoint[a].coord.Y), 2));
         }
-
+        private double SumOfWaysBetweenClasses(ref int numOfWays)
+        {
+            double waysum = 0;
+            for (int i = 0; i < vectorKernel.Count; i++)
+            {
+                for (int j = 0; j < vectorKernel.Count; j++)
+                {
+                    waysum += Way(vectorKernel[i], vectorKernel[j]);
+                    numOfWays++;
+                }
+                numOfWays--;
+            }
+            if (numOfWays == 0)
+            {
+                numOfWays = 1;
+            }
+            return waysum;
+        }
     }
 }
