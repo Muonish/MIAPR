@@ -38,9 +38,14 @@ namespace WFAppPerceptron
 
             for (int i = 0; i < Nclasses; i++)
                 for (int j = 0; j < Nobjects; j++)
-                    for (int k = 0; k < Nattributes; k++)
+                    for (int k = 0; k < Nattributes - 1; k++)
+                    {
                         if (j == 0) classes[i, j, k] = RandomNumber.Next(0, 19) - 10;
                         else classes[i, j, k] = classes[i, 0, k] + RandomNumber.Next(0, 4) - 2;
+
+                        classes[i, j, Nattributes - 1] = 1;
+                    }
+                       
 
             for (int i = 0; i < Nclasses; i++)
                 for (int j = 0; j < Nattributes; j++)
@@ -121,7 +126,7 @@ namespace WFAppPerceptron
                 {
                     parent.textBoxClasses.Text += "     object " + (j + 1).ToString();
                     parent.textBoxClasses.Text += " ( ";
-                    for (int k = 0; k < Nattributes; k++)
+                    for (int k = 0; k < Nattributes - 1; k++)
                         parent.textBoxClasses.Text += classes[i, j, k].ToString() + " ";
                     parent.textBoxClasses.Text += ")";
                     parent.textBoxClasses.Text += Environment.NewLine;

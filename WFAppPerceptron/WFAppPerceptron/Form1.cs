@@ -42,7 +42,7 @@ namespace WFAppPerceptron
             {
                 perceptron = new PerceptronTeaching(this, Nclasses, Nobjects, Nattributes);
                 dataGridViewTest.Rows.Clear();
-                for (int i = 0; i < Nattributes; i++ )
+                for (int i = 0; i < Nattributes - 1; i++ )
                     dataGridViewTest.Rows.Add();
                 this.Width = 889;
                 labelAnswer.Text = "";
@@ -60,19 +60,18 @@ namespace WFAppPerceptron
         {
             if (e.KeyChar < '0' || e.KeyChar > '9')
                 if (e.KeyChar != 8)
-                    if (e.KeyChar != ' ')
-                        e.KeyChar = '\0';
+                    e.KeyChar = '\0';
         }
 
         private void buttonClassify_Click(object sender, EventArgs e)
         {
             int[] attributes = new int[Nattributes + 1];
 
-            for (int i = 0; i < Nattributes + 1; i++)
+            for (int i = 0; i < Nattributes; i++)
             {
                 attributes[i] = Convert.ToInt32(dataGridViewTest.Rows[i].Cells[0].Value);
             }
-
+            attributes[Nattributes] = 1;
             perceptron.Classify(attributes);
         }
 
