@@ -36,16 +36,18 @@
             this.labelNobjects = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxNobjects = new System.Windows.Forms.TextBox();
-            this.labelNsigns = new System.Windows.Forms.Label();
-            this.textBoxNsigns = new System.Windows.Forms.TextBox();
+            this.labelNattributes = new System.Windows.Forms.Label();
+            this.textBoxNattributes = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.textBoxTest = new System.Windows.Forms.TextBox();
+            this.dataGridViewTest = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.labelAnswer = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonClassify = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxClasses = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTest)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxNclasses
@@ -122,53 +124,66 @@
             // textBoxNobjects
             // 
             this.textBoxNobjects.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxNobjects.Location = new System.Drawing.Point(241, 109);
+            this.textBoxNobjects.Location = new System.Drawing.Point(241, 111);
             this.textBoxNobjects.Name = "textBoxNobjects";
             this.textBoxNobjects.Size = new System.Drawing.Size(59, 24);
             this.textBoxNobjects.TabIndex = 6;
             this.textBoxNobjects.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxNclasses_KeyPress);
             // 
-            // labelNsigns
+            // labelNattributes
             // 
-            this.labelNsigns.AutoSize = true;
-            this.labelNsigns.BackColor = System.Drawing.Color.Transparent;
-            this.labelNsigns.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelNsigns.ForeColor = System.Drawing.SystemColors.Window;
-            this.labelNsigns.Location = new System.Drawing.Point(30, 150);
-            this.labelNsigns.Name = "labelNsigns";
-            this.labelNsigns.Size = new System.Drawing.Size(144, 20);
-            this.labelNsigns.TabIndex = 7;
-            this.labelNsigns.Text = "Number of signs:";
+            this.labelNattributes.AutoSize = true;
+            this.labelNattributes.BackColor = System.Drawing.Color.Transparent;
+            this.labelNattributes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelNattributes.ForeColor = System.Drawing.SystemColors.Window;
+            this.labelNattributes.Location = new System.Drawing.Point(30, 150);
+            this.labelNattributes.Name = "labelNattributes";
+            this.labelNattributes.Size = new System.Drawing.Size(179, 20);
+            this.labelNattributes.TabIndex = 7;
+            this.labelNattributes.Text = "Number of attributes:";
             // 
-            // textBoxNsigns
+            // textBoxNattributes
             // 
-            this.textBoxNsigns.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxNsigns.Location = new System.Drawing.Point(241, 150);
-            this.textBoxNsigns.Name = "textBoxNsigns";
-            this.textBoxNsigns.Size = new System.Drawing.Size(59, 24);
-            this.textBoxNsigns.TabIndex = 8;
-            this.textBoxNsigns.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxNclasses_KeyPress);
+            this.textBoxNattributes.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxNattributes.Location = new System.Drawing.Point(241, 150);
+            this.textBoxNattributes.Name = "textBoxNattributes";
+            this.textBoxNattributes.Size = new System.Drawing.Size(59, 24);
+            this.textBoxNattributes.TabIndex = 8;
+            this.textBoxNattributes.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxNclasses_KeyPress);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.DarkGray;
-            this.panel1.Controls.Add(this.textBoxTest);
+            this.panel1.Controls.Add(this.dataGridViewTest);
             this.panel1.Controls.Add(this.labelAnswer);
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.buttonClassify);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Location = new System.Drawing.Point(619, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(260, 591);
             this.panel1.TabIndex = 9;
             // 
-            // textBoxTest
+            // dataGridViewTest
             // 
-            this.textBoxTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxTest.Location = new System.Drawing.Point(31, 109);
-            this.textBoxTest.Name = "textBoxTest";
-            this.textBoxTest.Size = new System.Drawing.Size(192, 24);
-            this.textBoxTest.TabIndex = 14;
-            this.textBoxTest.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxTest_KeyPress);
+            this.dataGridViewTest.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataGridViewTest.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewTest.ColumnHeadersVisible = false;
+            this.dataGridViewTest.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1});
+            this.dataGridViewTest.Location = new System.Drawing.Point(31, 57);
+            this.dataGridViewTest.Name = "dataGridViewTest";
+            this.dataGridViewTest.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dataGridViewTest.RowHeadersVisible = false;
+            this.dataGridViewTest.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridViewTest.Size = new System.Drawing.Size(192, 132);
+            this.dataGridViewTest.TabIndex = 14;
+            this.dataGridViewTest.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dataGridViewTest_KeyPress);
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Column1";
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 192;
             // 
             // labelAnswer
             // 
@@ -176,24 +191,25 @@
             this.labelAnswer.BackColor = System.Drawing.Color.Transparent;
             this.labelAnswer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelAnswer.ForeColor = System.Drawing.SystemColors.Window;
-            this.labelAnswer.Location = new System.Drawing.Point(27, 314);
+            this.labelAnswer.Location = new System.Drawing.Point(27, 259);
             this.labelAnswer.Name = "labelAnswer";
             this.labelAnswer.Size = new System.Drawing.Size(73, 20);
             this.labelAnswer.TabIndex = 12;
             this.labelAnswer.Text = "Answer:";
             // 
-            // button1
+            // buttonClassify
             // 
-            this.button1.BackColor = System.Drawing.Color.PaleTurquoise;
-            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.ForeColor = System.Drawing.SystemColors.Window;
-            this.button1.Location = new System.Drawing.Point(31, 195);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(192, 42);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "Classify";
-            this.button1.UseVisualStyleBackColor = false;
+            this.buttonClassify.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.buttonClassify.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonClassify.BackgroundImage")));
+            this.buttonClassify.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonClassify.ForeColor = System.Drawing.SystemColors.Window;
+            this.buttonClassify.Location = new System.Drawing.Point(31, 195);
+            this.buttonClassify.Name = "buttonClassify";
+            this.buttonClassify.Size = new System.Drawing.Size(192, 42);
+            this.buttonClassify.TabIndex = 13;
+            this.buttonClassify.Text = "Classify";
+            this.buttonClassify.UseVisualStyleBackColor = false;
+            this.buttonClassify.Click += new System.EventHandler(this.buttonClassify_Click);
             // 
             // label3
             // 
@@ -201,7 +217,7 @@
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label3.ForeColor = System.Drawing.SystemColors.Window;
-            this.label3.Location = new System.Drawing.Point(27, 77);
+            this.label3.Location = new System.Drawing.Point(27, 32);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(111, 20);
             this.label3.TabIndex = 12;
@@ -241,8 +257,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBoxClasses);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.textBoxNsigns);
-            this.Controls.Add(this.labelNsigns);
+            this.Controls.Add(this.textBoxNattributes);
+            this.Controls.Add(this.labelNattributes);
             this.Controls.Add(this.textBoxNobjects);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.labelNobjects);
@@ -255,6 +271,7 @@
             this.Text = "Perceptron";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTest)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -269,15 +286,16 @@
         private System.Windows.Forms.Label labelNobjects;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxNobjects;
-        private System.Windows.Forms.Label labelNsigns;
-        private System.Windows.Forms.TextBox textBoxNsigns;
+        private System.Windows.Forms.Label labelNattributes;
+        private System.Windows.Forms.TextBox textBoxNattributes;
         private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.TextBox textBoxClasses;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonClassify;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBoxTest;
-        private System.Windows.Forms.Label labelAnswer;
+        public System.Windows.Forms.Label labelAnswer;
+        private System.Windows.Forms.DataGridView dataGridViewTest;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
     }
 }
 

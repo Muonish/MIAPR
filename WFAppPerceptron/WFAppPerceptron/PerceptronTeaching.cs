@@ -11,7 +11,7 @@ namespace WFAppPerceptron
     {
         int Nclasses;
         int Nobjects;
-        int Nsigns;
+        int Nattributes;
         FormMain parent;
         int[, ,] classes;
         int[,] function;
@@ -21,7 +21,7 @@ namespace WFAppPerceptron
         {
             Nclasses = nc;
             Nobjects = no;
-            Nsigns = ns + 1;
+            Nattributes = ns + 1;
             parent = p;
             RandomInitialData();
             Teach();
@@ -32,17 +32,18 @@ namespace WFAppPerceptron
         private void RandomInitialData()
         {
             Random RandomNumber = new Random();
-            classes = new int[Nclasses, Nobjects, Nsigns];
-            function = new int[Nclasses, Nsigns];
+            classes = new int[Nclasses, Nobjects, Nattributes];
+            function = new int[Nclasses, Nattributes];
             mult = new int[Nclasses];
 
             for (int i = 0; i < Nclasses; i++)
                 for (int j = 0; j < Nobjects; j++)
-                    for (int k = 0; k < Nsigns; k++)
-                        classes[i,j,k] = RandomNumber.Next(0, 9);
+                    for (int k = 0; k < Nattributes; k++)
+                        if (j == 0) classes[i, j, k] = RandomNumber.Next(0, 19) - 10;
+                        else classes[i, j, k] = classes[i, 0, k] + RandomNumber.Next(0, 4) - 2;
 
             for (int i = 0; i < Nclasses; i++)
-                for (int j = 0; j < Nsigns; j++)
+                for (int j = 0; j < Nattributes; j++)
                     function[i, j] = 0;
         }
 
@@ -64,9 +65,6 @@ namespace WFAppPerceptron
                             Encourage(i, j);
                             isPunished++;
                         }
-
-                        PrintFunctions();
-                        parent.textBoxFunctions.Refresh();
                     }
                 }
             }
@@ -78,11 +76,11 @@ namespace WFAppPerceptron
                 mult[i] = 0;
 
             for (int i = 0; i < Nclasses; i++ )
-                for (int j = 0; j < Nsigns; j++)
+                for (int j = 0; j < Nattributes; j++)
                     mult[i] += function[i, j] * classes[numberOfClass, numberOfObj, j];
         }
 
-        public bool isRightComposition(int numOfneedClass)
+        private bool isRightComposition(int numOfneedClass)
         {
             bool result = true;
             int needClass = mult[numOfneedClass];
@@ -96,19 +94,19 @@ namespace WFAppPerceptron
             return result;
         }
 
-        private void Encourage(int numberOfFunc, int numberOfObj)
+        private void Encourage(int numberOfClass, int numberOfObj)
         {
             for (int i = 0; i < Nclasses; i++)
             {
-                if (i == numberOfFunc)
+                if (i == numberOfClass)
                 {
-                    for (int j = 0; j < Nsigns; j++)
-                        function[i, j] += classes[numberOfFunc, numberOfObj, j];
+                    for (int j = 0; j < Nattributes; j++)
+                        function[i, j] += classes[numberOfClass, numberOfObj, j];
                 }
                 else
                 {
-                    for (int j = 0; j < Nsigns; j++)
-                        function[i, j] -= classes[numberOfFunc, numberOfObj, j];
+                    for (int j = 0; j < Nattributes; j++)
+                        function[i, j] -= classes[numberOfClass, numberOfObj, j];
                 }
             }
         }
@@ -123,7 +121,7 @@ namespace WFAppPerceptron
                 {
                     parent.textBoxClasses.Text += "     object " + (j + 1).ToString();
                     parent.textBoxClasses.Text += " ( ";
-                    for (int k = 0; k < Nsigns; k++)
+                    for (int k = 0; k < Nattributes; k++)
                         parent.textBoxClasses.Text += classes[i, j, k].ToString() + " ";
                     parent.textBoxClasses.Text += ")";
                     parent.textBoxClasses.Text += Environment.NewLine;
@@ -136,9 +134,9 @@ namespace WFAppPerceptron
             for (int i = 0; i < Nclasses; i++)
             {
                 parent.textBoxFunctions.Text += "d" + (i + 1).ToString() + "(x) = ";
-                for (int j = 0; j < Nsigns; j++)
+                for (int j = 0; j < Nattributes; j++)
                 {
-                    if (j != Nsigns - 1)
+                    if (j != Nattributes - 1)
                     {
                         parent.textBoxFunctions.Text += function[i, j].ToString() + "*" + "x" + (j + 1).ToString();
                         parent.textBoxFunctions.Text += " + ";
@@ -149,6 +147,37 @@ namespace WFAppPerceptron
                 parent.textBoxFunctions.Text += Environment.NewLine;
             }
             parent.textBoxFunctions.Text += Environment.NewLine;
+        }
+
+        public void Classify(int[] attr)
+        {
+            for (int i = 0; i < Nclasses; i++)
+                mult[i] = 0;
+
+            for (int i = 0; i < Nclasses; i++)
+                for (int j = 0; j < Nattributes; j++)
+                    mult[i] += function[i, j] * attr[j];
+
+            int max = int.MinValue;
+            int numberOfMaxMult = 0;
+
+            parent.labelAnswer.Text = "";
+            parent.labelAnswer.Text += "Answer:";
+            parent.labelAnswer.Text += Environment.NewLine;
+            parent.labelAnswer.Text += Environment.NewLine;
+            for (int i = 0; i < Nclasses; i++)
+            {
+                parent.labelAnswer.Text += "d(" + (i + 1).ToString() + ") = " + mult[i].ToString();
+                parent.labelAnswer.Text += Environment.NewLine;
+                if (mult[i] > max)
+                {
+                    max = mult[i];
+                    numberOfMaxMult = i;
+                }
+            }
+
+            parent.labelAnswer.Text += "Belongs to the class " + (numberOfMaxMult + 1).ToString();
+            parent.labelAnswer.Text += Environment.NewLine;
         }
     }
 }
